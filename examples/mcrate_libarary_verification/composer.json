@@ -1,0 +1,6 @@
+{
+  "minimum-stability": "stable",
+  "require": {
+    "mcrate/bonus-php": "~1.0"
+  }
+}
