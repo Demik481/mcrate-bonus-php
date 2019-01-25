@@ -34,7 +34,7 @@ if ($config['type'] == 'GET') {
 
 if (isset($request['nick']) && isset($request['hash'])) {
     if (md5(md5($request['nick'] . $config['secret'] . 'mcrate')) == $request['hash']) {
-        $db = new PDO($config['db']['driver'] . ':host=' . $config['db']['host'] . ';dbname=' . $config['db']['database'], $config['db']['username'], $config['db']['password']);
+        $db = new PDO($config['database']['driver'] . ':host=' . $config['database']['host'] . ';dbname=' . $config['database']['database'], $config['database']['username'], $config['database']['password']);
 
         $select = $db->prepare("SELECT * FROM " . $config['economy']['table-name'] . " WHERE `" . $config['economy']['nickname-column'] . "`=?");
         $select->execute([$request['nick']]);
