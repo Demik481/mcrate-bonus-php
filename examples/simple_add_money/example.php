@@ -42,7 +42,7 @@ if (isset($request['nick']) && isset($request['hash'])) {
             $query = $db->prepare("UPDATE " . $config['economy']['table-name'] . " SET `" . $config['economy']['balance-column'] . "`=`" . $config['economy']['balance-column'] . "`+" . $config['economy']['bonus'] . " WHERE `" . $config['economy']['nickname-column'] . "`=?");
         elseif ($config['advanced']['addNewNickname'])
             $query = $db->prepare("INSERT INTO " . $config['economy']['table-name'] . " (`" . $config['economy']['nickname-column'] . "`,`" . $config['economy']['balance-column'] . "`) VALUES (?, " . (intval($config['advanced']['start-balance']) + intval($config['economy']['bonus'])) . ")");
-        $query->execute([$_GET['player']]);
+        $query->execute([$_GET['nick']]);
 
         if ($db->errorCode() != 0000) {
             $error_array = $db->errorInfo();
