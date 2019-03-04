@@ -40,13 +40,15 @@ if (isset($request['nick']) && isset($request['hash'])) {
         $select->execute([$request['nick']]);
         if ($select->fetchColumn() > 0)
             $query = $db->prepare("UPDATE " . $config['economy']['table-name'] . " SET `" . $config['economy']['balance-column'] . "`=`" . $config['economy']['balance-column'] . "`+" . $config['economy']['bonus'] . " WHERE `" . $config['economy']['nickname-column'] . "`=?");
-        elseif ($config['advanced']['addNewNickname'])
+        elseif ($config['advanced']['add-new-nickname'])
             $query = $db->prepare("INSERT INTO " . $config['economy']['table-name'] . " (`" . $config['economy']['nickname-column'] . "`,`" . $config['economy']['balance-column'] . "`) VALUES (?, " . (intval($config['advanced']['start-balance']) + intval($config['economy']['bonus'])) . ")");
-        $query->execute([$_GET['nick']]);
+        if (isset($query)) {
+            $query->execute([$_GET['nick']]);
 
-        if ($db->errorCode() != 0000) {
-            $error_array = $db->errorInfo();
-            throw new Exception("Error in SQL: " . $error_array[2]);
+            if ($db->errorCode() != 0000) {
+                $error_array = $db->errorInfo();
+                throw new Exception("Error in SQL: " . $error_array[2]);
+            }
         }
     } else {
         throw new InvalidArgumentException("Invalid hash. Check secret.", 400);
